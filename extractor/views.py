@@ -20,9 +20,8 @@ def home(request):
         if form.is_valid():
             fileForm = form.save(commit=False)
             fileForm.timetable_id = ''.join(random.choices(
-                string.ascii_uppercase + string.digits, k=30))
+                string.ascii_uppercase + string.digits, k=20))
             fileForm.save()
-            print(fileForm.timetable_id)
             return redirect('extract/'+fileForm.timetable_id)
     else:
         form = uploadForm()
@@ -52,6 +51,5 @@ def exam_list(request, timetable_id):
     """
     exams = Exam.objects.filter(timetable_id=timetable_id)
     serializer = serializers.serialize('json', exams)
-    print(serializer)
     serializer = ExtractorSerializer(exams, many=True)
     return JsonResponse(serializer.data, safe=False)

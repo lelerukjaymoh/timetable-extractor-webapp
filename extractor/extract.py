@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from openpyxl import Workbook
 import openpyxl
-import pprint
 import re
 import json
 from .models import Timetable, Year, Semester, Exam
@@ -38,15 +37,12 @@ class Extractor:
                         for cell in row:
                             if cell.value is not None and "DAY" in cell.value:
                                 date = str(ws.cell(column=1, row=int(cell.row)+1).value)+' '+str(cell.value)
-                                print(date)
 
                     # TODO: Send extracted data to db
 
                     db_year = Year.objects.get(year=year)
                     db_sem = Semester.objects.get(Q(year=db_year.year),Q(sem=sem))
 
-                    print('Tis is date')
-                    print(date)
                     exam = Exam(
                         semester = db_sem,
                         timetable_id = timetable_id,
